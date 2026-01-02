@@ -1,0 +1,48 @@
+Start with the backend foundation first, then move outward. For you, this is the most sensible order:
+
+***
+
+## 1. Set up repo and environment
+
+- Create a **new folder** for this project (keep old ones untouched, like before).
+- Initialize Git: `git init` and create a GitHub repo (you’ll need this for submission).  
+- Create a **Python venv** and install base libs: `requests`, `beautifulsoup4`, `aiohttp`, `psycopg2-binary`, `python-dotenv`.
+
+***
+
+## 2. Create PostgreSQL schema locally
+
+- Start your local PostgreSQL (like in your previous scraping project).
+- Create a new database, e.g. `yc_companies`.  
+- Create the **four tables** exactly as specified: `companies`, `company_snapshots`, `company_web_enrichment`, `scrape_runs`. Do this now, before writing scraper code.
+
+---
+
+## 3. Implement a minimal scraper for just the list
+
+- Write a **simple Python script** that:
+  - Hits the YC companies listing endpoint and prints a list of company names + profile URLs for one page.[1]
+  - No DB writes, no detail pages yet; just confirm you can fetch and parse basic data.
+
+---
+
+## 4. Connect scraper → DB (only companies table)
+
+- Extend the script to:
+  - Upsert into `companies` (id, yc_company_id, name, domain, first_seen_at, last_seen_at, is_active).  
+  - Log basic info to console (later to `scraper.log`).
+
+***
+
+## 5. Then grow features step by step
+
+Once the above works:
+
+1. Add **detail page parsing** and `company_snapshots` with `data_hash`.  
+2. Add **website enrichment**.  
+3. Add **scrape_runs** metrics and timing per company.  
+4. Only after scraper + DB are stable, scaffold **Next.js** and start adding API routes and pages.
+
+If you want, next step can be: “give me exact SQL for the 4 tables” or “show me a minimal Python file for step 3.”
+
+[1](https://www.ycombinator.com/companies)
