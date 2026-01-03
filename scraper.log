@@ -1,0 +1,6 @@
+2026-01-03 16:12:23,129 - INFO - YC Companies Master Scraper Started
+2026-01-03 16:12:23,329 - INFO - Started scrape run #4
+2026-01-03 16:12:23,329 - INFO - Fetching company list from Algolia
+2026-01-03 16:12:25,078 - ERROR - Algolia fetch failed: 403 Client Error: Forbidden for url: https://45bwzj1sgc-dsn.algolia.net/1/indexes/*/queries
+2026-01-03 16:12:25,078 - INFO - Total companies discovered: 0
+2026-01-03 16:12:25,082 - INFO - Starting website enrichment
