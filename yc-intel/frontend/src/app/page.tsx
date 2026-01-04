@@ -4,6 +4,8 @@ import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { Search, MapPin, TrendingUp } from 'lucide-react';
 
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || 'https://yc-companies-api.onrender.com/api';
+
 interface Company {
   id: number;
   name: string;
@@ -37,7 +39,7 @@ export default function Home() {
         ...(search ? { search } : {}),
       });
 
-      const res = await fetch(`/api/companies?${params}`, { signal: controller.signal });
+      const res = await fetch(`${API_BASE_URL}/companies?{params}`, { signal: controller.signal });
       if (!res.ok) throw new Error('Failed to fetch');
 
       const result = await res.json();
