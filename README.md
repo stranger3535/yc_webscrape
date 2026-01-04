@@ -1,10 +1,6 @@
-Yes. Here is a refined README you can directly replace your current one with. You can still tweak wording later, but this is ready to use.
-
-***
-
 # YC Companies Intelligence Platform
 
-A full‑stack platform that scrapes Y Combinator companies, stores them in PostgreSQL, and exposes an interactive analytics dashboard built with Next.js.
+A full‑stack platform that scrapes Y Combinator companies, stores them in Neon Postgres, and exposes an interactive analytics dashboard built with Next.js.
 
 - Live app: **https://yc-webscrape.vercel.app/**
 - Backend API (Render): **https://yc-companies-api.onrender.com**
@@ -13,10 +9,10 @@ A full‑stack platform that scrapes Y Combinator companies, stores them in Post
 
 ## Project Overview
 
-- Scrapes YC company data from the YC directory / API, including core metadata and website information.[1]
-- Stores normalized data in PostgreSQL so it can be queried, analyzed, and kept historically.[2]
-- Exposes REST APIs (companies, analytics, scrape runs) from a Python backend deployed on Render.[3][2]
-- Frontend is a Next.js 13+ app (TypeScript + Tailwind) deployed on Vercel that visualizes companies and analytics.[4]
+- Scrapes YC company data from the YC directory / API, including core metadata and website information.
+- Stores normalized data in Neon serverless Postgres for querying, analytics, and historical tracking.
+- Exposes REST APIs (companies, analytics, scrape runs) from a Python backend deployed on Render.
+- Frontend is a Next.js 13+ app (TypeScript + Tailwind) deployed on Vercel that visualizes companies and analytics.
 
 ***
 
@@ -31,7 +27,7 @@ YC Directory / YC API
           │
           │  psycopg2 / SQL
           ▼
-    PostgreSQL Database
+   Neon Postgres Database
  (companies, snapshots,
   enrichment, scrape_runs)
           │
@@ -46,10 +42,10 @@ YC Directory / YC API
           │  NEXT_PUBLIC_API_BASE_URL
           ▼
 Next.js Frontend (Vercel)
-  - /              → Landing / explorer
-  - /companies     → Companies table
-  - /companies/[id]→ Company details
-  - /analytics     → Charts & metrics
+  - /               → Landing / explorer
+  - /companies      → Companies table
+  - /companies/[id] → Company details
+  - /analytics      → Charts & metrics
 ```
 
 ***
@@ -58,37 +54,37 @@ Next.js Frontend (Vercel)
 
 ### Scraper & Backend
 
-- Python scraping pipeline for YC companies (list + detail + website enrichment).[1]
-- Async HTTP requests and HTML parsing (e.g. aiohttp + BeautifulSoup).[5]
-- Incremental updates to avoid duplicate data and keep history in snapshot tables.[1]
-- REST API service on Render that reads from Postgres and returns JSON for the frontend.[2][3]
+- Python scraping pipeline for YC companies (list, detail, and website enrichment).
+- Async HTTP requests and HTML parsing (e.g. aiohttp + BeautifulSoup).
+- Incremental updates to avoid duplicates and keep history in snapshot tables.
+- REST API on Render that reads from Neon Postgres and returns JSON for the frontend.
 
-### Database (PostgreSQL)
+### Database (Neon Postgres)
 
 Typical tables:
 
-- `companies`: core YC company metadata (name, batch, status, tags, location, website, etc.).[1]
-- `company_snapshots`: tracks historical changes over time.[1]
-- `company_web_enrichment`: extra info scraped from each company’s own website.[1]
-- `scrape_runs`: run‑level metrics (duration, counts, errors, timestamps).[1]
+- `companies`: core YC company metadata (name, batch, status, tags, location, website, etc.).
+- `company_snapshots`: tracks historical changes over time.
+- `company_web_enrichment`: extra info scraped from each company’s own website.
+- `scrape_runs`: run‑level metrics (duration, counts, errors, timestamps).
 
 ### Frontend (Next.js on Vercel)
 
-- Company explorer with search, filters, pagination, and links to company websites.[1]
-- Company detail pages with richer information and historical context.[1]
-- Analytics page showing distributions by batch, stage, and country, plus a companies table and CSV export.[6]
+- Company explorer with search, filters, pagination, and links to company websites.
+- Company detail pages with richer information and historical context.
+- Analytics page showing distributions by batch, stage, and country, plus a companies table and CSV export.
 
 ***
 
 ## Tech Stack
 
-- **Language / Backend:** Python (scraper + API service).[5]
-- **Database:** PostgreSQL (compatible with Neon, Render, or any managed Postgres).[2]
-- **Frontend:** Next.js 13+ with TypeScript, React, and Tailwind CSS.[6]
+- **Language / Backend:** Python (scraper + API service).
+- **Database:** Neon serverless Postgres (managed Postgres on Neon).
+- **Frontend:** Next.js 13+ with TypeScript, React, and Tailwind CSS.
 - **Hosting:**  
-  - Frontend → Vercel (`yc-intel/frontend` → `yc-webscrape.vercel.app`).[4]
-  - Backend → Render Web Service (Python API).[2]
-  - Source control → GitHub (`stranger3535/yc_webscrape`).[7]
+  - Frontend → Vercel (`yc-intel/frontend` → `yc-webscrape.vercel.app`).
+  - Backend → Render Web Service (Python API).
+  - Source control → GitHub (`stranger3535/yc_webscrape`).
 
 ***
 
@@ -99,9 +95,8 @@ Typical tables:
 From repo root:
 
 ```bash
-cd yc-intel
+cd yc_intel
 
-# create venv
 python -m venv venv
 # Windows
 venv\Scripts\activate
@@ -111,20 +106,27 @@ venv\Scripts\activate
 pip install -r requirements.txt
 ```
 
-Configure Postgres via environment variables:
+Configure Neon Postgres via environment variables:
+
+```bash
+# Option 1: single connection string from Neon
+export DATABASE_URL="postgresql://USER:12341@HOST/neondb?sslmode=require"
+```
+
+Or split if your code expects individual fields:
 
 ```bash
 export POSTGRES_HOST=localhost
 export POSTGRES_PORT=5432
-export POSTGRES_DB=yc_companies
-export POSTGRES_USER=your_user
-export POSTGRES_PASSWORD=your_password
+export POSTGRES_DB=neondb
+export POSTGRES_USER=yc_web
+export POSTGRES_PASSWORD=12341
 ```
 
 Run scraper (example):
 
 ```bash
-python scraper/main_scraper.py
+python scraper/detail_scraper.py
 ```
 
 Run API server (FastAPI / Flask / etc.) so it exposes:
@@ -132,9 +134,9 @@ Run API server (FastAPI / Flask / etc.) so it exposes:
 - `GET /api/companies`
 - `GET /api/companies/:id`
 - `GET /api/analytics`
-- `GET /api/scrape-runs`[3]
+- `GET /api/scrape-runs`
 
-Typically on `http://localhost:8000`.
+Typically served on `http://localhost:8000`.
 
 ### 2. Frontend (Next.js)
 
@@ -156,7 +158,7 @@ NEXT_PUBLIC_API_BASE_URL=http://localhost:8000
 Then:
 
 - App: http://localhost:3000  
-- Analytics: http://localhost:3000/analytics[6]
+- Analytics: http://localhost:3000/analytics
 
 ***
 
@@ -164,31 +166,36 @@ Then:
 
 ### Frontend – Vercel
 
-1. Push changes to GitHub (`master` or main branch).[8]
-2. In Vercel dashboard, import the `yc_webscrape` repo and set the root directory to `yc-intel/frontend`.[4]
-3. Set environment variables:  
+1. Push changes to GitHub (`master` or main).
+2. In Vercel, import the `yc_webscrape` repo and set the root directory to `yc-intel/frontend`.
+3. Set environment variables:
 
    ```txt
    NEXT_PUBLIC_API_BASE_URL=https://yc-companies-api.onrender.com
    ```
 
-4. Deploy; Vercel will build and host at `https://yc-webscrape.vercel.app/`.[4]
+4. Deploy; Vercel builds and hosts at `https://yc-webscrape.vercel.app/`.
 
 ### Backend – Render
 
-1. Create a **Web Service** in Render from the same GitHub repo, pointing to your backend folder (inside `yc-intel`).[2]
-2. Set build & start commands for your Python web framework.[9]
-3. Configure Postgres (`DATABASE_URL` or individual vars).[2]
-4. Deploy; Render gives a URL like `https://yc-companies-api.onrender.com`, which must match `NEXT_PUBLIC_API_BASE_URL` in Vercel.[3][2]
+1. Create a **Web Service** in Render from this GitHub repo, pointing to your backend folder (inside `yc-intel`).
+2. Set build & start commands for your Python web framework.
+3. Configure Neon in Render:
+
+   ```txt
+   DATABASE_URL = <Neon connection string with sslmode=require>
+   ``` [5][4]
+
+4. Deploy; Render gives a URL like `https://yc-companies-api.onrender.com`, which must match `NEXT_PUBLIC_API_BASE_URL` in Vercel.
 
 ***
 
 ## Data Flow
 
-1. Scraper fetches YC companies and their websites.[1]
-2. New and updated records are stored in Postgres (companies + snapshots + enrichment).[1]
-3. Backend API reads from Postgres and serves JSON.[3]
-4. Next.js frontend calls the API, renders tables and charts, and allows export to CSV.[6]
+1. Scraper fetches YC companies and their websites.
+2. New and updated records are stored in Neon Postgres (companies + snapshots + enrichment).
+3. Backend API reads from Neon and serves JSON.
+4. Next.js frontend calls the API, renders tables and charts, and supports CSV export.
 
 ***
 
@@ -197,15 +204,3 @@ Then:
 MIT (or update to your preferred license).
 
 ***
-
-If you paste this into `README.md` now, it will match your current setup (Vercel + Render). If something in the structure (backend folder name or API paths) is different, say what you changed and this can be adjusted.
-
-[1](https://github.com/corralm/yc-scraper)
-[2](https://render.com/docs/render-vs-vercel-comparison)
-[3](https://stackoverflow.com/questions/77740845/deploy-react-app-in-vercel-with-backend-in-render)
-[4](https://vercel.com/products/rendering)
-[5](https://github.com/alirezamika/autoscraper)
-[6](https://raw.githubusercontent.com/stranger3535/yc_webscrape/refs/heads/master/yc-intel/frontend/src/app/analytics/page.tsx)
-[7](https://pkg.go.dev/github.com/sethvargo/go-diceware/diceware)
-[8](https://stackoverflow.com/questions/36567344/unable-to-create-git-index-lock-file-exists-but-it-doesnt)
-[9](https://github.com/DevManSam777/yp_scraper)
