@@ -39,7 +39,7 @@ export default function Home() {
         ...(search ? { search } : {}),
       });
 
-      const res = await fetch(`${API_BASE_URL}/companies?{params}`, { signal: controller.signal });
+      const res = await fetch(`${API_BASE_URL}/companies??${params}`, { signal: controller.signal });
       if (!res.ok) throw new Error('Failed to fetch');
 
       const result = await res.json();
