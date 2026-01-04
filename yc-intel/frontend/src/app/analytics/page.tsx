@@ -3,6 +3,8 @@
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || 'https://yc-companies-api.onrender.com/api';
+
 interface AnalyticsData {
   batches: Array<{ batch: string; count: number }>;
   stages: Array<{ stage: string; count: number }>;
@@ -22,8 +24,8 @@ export default function Analytics() {
     async function load() {
       try {
         const [analyticsRes, companiesRes] = await Promise.all([
-          fetch('/api/analytics'),
-          fetch(`/api/companies?page=${page}&limit=${limit}`)
+          fetch('${API_BASE_URL}/analytics'),
+          fetch(`${API_BASE_URL}/companies?page=${page}&limit=${limit}`)
         ]);
         
         const analyticsData = await analyticsRes.json();
