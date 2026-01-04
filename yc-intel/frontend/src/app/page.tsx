@@ -25,11 +25,11 @@ export default function Home() {
 
   const fetchCompanies = async () => {
     setLoading(true);
+    let timeoutId: NodeJS.Timeout | undefined;
     try {
-            // Create AbortController with 90 second timeout for Render cold start
+      // Create AbortController with 90 second timeout for Render cold start
       const controller = new AbortController();
-      let timeoutId;
-      const timeoutId = setTimeout(() => controller.abort(), 90000);
+      timeoutId = setTimeout(() => controller.abort(), 90000);
 
       const params = new URLSearchParams({
         page: page.toString(),
@@ -46,7 +46,7 @@ export default function Home() {
       console.error('Failed to fetch:', error);
       setCompanies([]);
     } finally {
-            clearTimeout(timeoutId);
+      if (timeoutId) clearTimeout(timeoutId);
       setLoading(false);
     }
   };
@@ -154,8 +154,7 @@ export default function Home() {
                     rel="noopener noreferrer"
                     onClick={(e) => e.stopPropagation()}
                     className="text-blue-600 hover:underline text-sm font-medium"
-                  >
-                    Visit Website →
+                  >                    Visit Website →
                   </a>
                 )}
               </Link>
