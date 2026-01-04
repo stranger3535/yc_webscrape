@@ -1,0 +1,27 @@
+2026-01-04 12:32:36,409 - INFO - Ensuring database tables exist...
+2026-01-04 12:32:43,046 - INFO - Found 1000 companies, processing first 10
+2026-01-04 12:32:43,047 - INFO - Scraping company 1/10: doordash
+2026-01-04 12:32:53,531 - INFO -   Performance: Index=1028ms, Parse=18ms, DB=3123ms, Enrich=1132ms, Total=10484ms
+2026-01-04 12:32:54,032 - INFO - Scraping company 2/10: airbnb
+2026-01-04 12:33:05,753 - INFO -   Performance: Index=353ms, Parse=14ms, DB=3096ms, Enrich=3088ms, Total=11721ms
+2026-01-04 12:33:06,254 - INFO - Scraping company 3/10: coinbase
+2026-01-04 12:33:15,229 - INFO -   Performance: Index=322ms, Parse=15ms, DB=3085ms, Enrich=495ms, Total=8976ms
+2026-01-04 12:33:15,730 - INFO - Scraping company 4/10: instacart
+2026-01-04 12:36:25,714 - INFO -   Performance: Index=412ms, Parse=21ms, DB=2913ms, Enrich=181470ms, Total=189984ms
+2026-01-04 12:36:26,214 - INFO - Scraping company 5/10: oklo
+2026-01-04 12:36:36,554 - INFO -   Performance: Index=1411ms, Parse=24ms, DB=2896ms, Enrich=913ms, Total=10340ms
+2026-01-04 12:36:37,055 - INFO - Scraping company 6/10: groww
+2026-01-04 12:36:46,519 - INFO -   Performance: Index=393ms, Parse=26ms, DB=3116ms, Enrich=751ms, Total=9464ms
+2026-01-04 12:36:47,019 - INFO - Scraping company 7/10: meesho
+2026-01-04 12:36:56,071 - INFO -   Performance: Index=364ms, Parse=12ms, DB=2972ms, Enrich=468ms, Total=9052ms
+2026-01-04 12:36:56,573 - INFO - Scraping company 8/10: rigetti-computing
+2026-01-04 12:37:07,837 - INFO -   Performance: Index=346ms, Parse=8ms, DB=3002ms, Enrich=2867ms, Total=11264ms
+2026-01-04 12:37:08,337 - INFO - Scraping company 9/10: dropbox
+2026-01-04 12:37:27,470 - INFO -   Performance: Index=366ms, Parse=12ms, DB=3093ms, Enrich=10564ms, Total=19133ms
+2026-01-04 12:37:27,971 - INFO - Scraping company 10/10: gitlab
+2026-01-04 12:37:37,792 - INFO -   Performance: Index=350ms, Parse=12ms, DB=2973ms, Enrich=1415ms, Total=9821ms
+2026-01-04 12:37:38,295 - INFO - Scraping completed in 301.88s
+2026-01-04 12:37:40,837 - ERROR - Failed to save scrape run metrics: column "slowest_company_name" of relation "scrape_runs" does not exist
+LINE 5:                  slowest_company_name, slowest_company_time_...
+                         ^
+
