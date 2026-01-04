@@ -28,6 +28,7 @@ export default function Home() {
     try {
             // Create AbortController with 90 second timeout for Render cold start
       const controller = new AbortController();
+      let timeoutId;
       const timeoutId = setTimeout(() => controller.abort(), 90000);
 
       const params = new URLSearchParams({
@@ -36,7 +37,7 @@ export default function Home() {
         ...(search ? { search } : {}),
       });
 
-      const res = await fetch(`/api/companies?${params}`, { signal: controller.signal });`);
+      const res = await fetch(`/api/companies?${params}`, { signal: controller.signal });
       if (!res.ok) throw new Error('Failed to fetch');
 
       const result = await res.json();
