@@ -26,13 +26,17 @@ export default function Home() {
   const fetchCompanies = async () => {
     setLoading(true);
     try {
+            // Create AbortController with 90 second timeout for Render cold start
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 90000);
+
       const params = new URLSearchParams({
         page: page.toString(),
         limit: limit.toString(),
         ...(search ? { search } : {}),
       });
 
-      const res = await fetch(`/api/companies?${params}`);
+      const res = await fetch(`/api/companies?${param, { signal: controller.signal });`);
       if (!res.ok) throw new Error('Failed to fetch');
 
       const result = await res.json();
@@ -41,6 +45,7 @@ export default function Home() {
       console.error('Failed to fetch:', error);
       setCompanies([]);
     } finally {
+            clearTimeout(timeoutId);
       setLoading(false);
     }
   };
