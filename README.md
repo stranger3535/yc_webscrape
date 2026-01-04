@@ -110,7 +110,7 @@ Configure Neon Postgres via environment variables:
 
 ```bash
 # Option 1: single connection string from Neon
-export DATABASE_URL="postgresql://USER:12341@HOST/neondb?sslmode=require"
+export DATABASE_URL="postgresql://neondb_owner:npg_eAdi1LZsR8JO@ep-patient-tooth-a4tkmrmy-pooler.us-east-1.aws.neon.tech/neondb?sslmode=require&channel_binding=require"
 ```
 
 Or split if your code expects individual fields:
@@ -119,7 +119,7 @@ Or split if your code expects individual fields:
 export POSTGRES_HOST=localhost
 export POSTGRES_PORT=5432
 export POSTGRES_DB=neondb
-export POSTGRES_USER=yc_web
+export POSTGRES_USER=neon
 export POSTGRES_PASSWORD=12341
 ```
 
