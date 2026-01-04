@@ -18,7 +18,6 @@ app.add_middleware(
     allow_headers=["*"],
     allow_credentials=True,
 )
-)
 
 def get_db():
     return psycopg2.connect(NEON_DATABASE_URL, cursor_factory=RealDictCursor)
