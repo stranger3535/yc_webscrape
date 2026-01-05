@@ -143,7 +143,7 @@ class YCScraper:
             payload = {
                 "requests": [
                     {
-                        "indexName": "Company",
+                        "indexName": "YCCompany_production",
                         "query": "",
                         "page": page,
                         "hitsPerPage": 100,
@@ -456,8 +456,6 @@ class YCScraper:
                 time.sleep(0.1)
 
             asyncio.run(self.enrich_all_companies())
-            self.end_scrape_run()
-            self.print_summary()
 
         except Exception as e:
             logger.error("Fatal pipeline failure", exc_info=True)
@@ -465,6 +463,8 @@ class YCScraper:
         finally:
             self.cur.close()
             self.conn.close()
+                        self.end_scrape_run()
+                        self.print_summary()
 
 
 # ------------------------------------------------------------------
